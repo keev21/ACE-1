@@ -1,6 +1,6 @@
 <ion-header collapse="fade" [translucent]="true">
   <ion-toolbar color="dark">
-    <ion-title color="light">Inventario Menu</ion-title>
+    <ion-title color="light">Inventario</ion-title>
     <ion-buttons slot="primary">
       <!--<ion-button color="light" routerLink="/ajustes">
         <ion-icon slot="icon-only" name="cog"></ion-icon>
@@ -10,15 +10,121 @@
 </ion-header>
 
 <ion-content>
-  <br>
+  <ion-searchbar class="searchbar-spacing" color="medium" [(ngModel)]="searchTerm" (ionInput)="filterProductos($event)"
+    placeholder="Buscar producto"></ion-searchbar>
+
   <ion-button color="tertiary" routerLink="/inventarioregistro" class="floating-button button-spacing">
     <ion-icon color="dark" name="duplicate-outline" class="icon-space"></ion-icon>
     <strong>Registrar Inventario</strong>
   </ion-button>
-  
-  <br>
-  
-  <ion-searchbar class="searchbar-spacing" color="medium" [(ngModel)]="searchTerm" (ionInput)="filterProductos($event)"
-    placeholder="Buscar producto"></ion-searchbar>
 
+  <ion-grid class="transparent-grid custom-table">
+    <!-- Fila para la fecha -->
+    <ion-row class="header-row">
+      <ion-col class="header col-label" color="light">Fecha</ion-col>
+      <ion-col class="data col-value" *ngFor="let producto of getPaginatedProductos()">{{ producto.fecha }}</ion-col>
+    </ion-row>
+
+    <!-- Fila para el producto -->
+    <ion-row class="header-row">
+      <ion-col class="header col-label" color="light">Producto</ion-col>
+      <ion-col class="data col-value" *ngFor="let producto of getPaginatedProductos()">{{ producto.nombre }}</ion-col>
+    </ion-row>
+
+    <!-- Fila para la cantidad -->
+    <ion-row class="header-row">
+      <ion-col class="header col-label" color="light">Cantidad</ion-col>
+      <ion-col class="data col-value" *ngFor="let producto of getPaginatedProductos()">{{ producto.cantidad_inicial }}</ion-col>
+    </ion-row>
+
+    <!-- Fila para el precio -->
+    <ion-row class="header-row">
+      <ion-col class="header col-label" color="light">Precio</ion-col>
+      <ion-col class="data col-value" *ngFor="let producto of getPaginatedProductos()">{{ producto.precio }}</ion-col>
+    </ion-row>
+
+    <!-- Fila para la ganancia -->
+    <ion-row class="header-row">
+      <ion-col class="header col-label" color="light">Ganancia</ion-col>
+      <ion-col class="data col-value" *ngFor="let producto of getPaginatedProductos()">{{ producto.ganancia }}</ion-col>
+    </ion-row>
+
+    <!-- Fila para la pérdida -->
+    <ion-row class="header-row">
+      <ion-col class="header col-label" color="light">Pérdida</ion-col>
+      <ion-col class="data col-value" *ngFor="let producto of getPaginatedProductos()">{{ producto.perdida }}</ion-col>
+    </ion-row>
+
+    <!-- Fila para las opciones -->
+    <ion-row class="header-row">
+      <ion-col class="header col-label" color="light">Opciones</ion-col>
+      <ion-col class="data col-value" *ngFor="let producto of getPaginatedProductos()">
+        <div class="action-buttons">
+          <ion-button size="small" fill="clear" color="tertiary" (click)="editarProducto(producto.codigo)">
+            <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+          </ion-button>
+          <ion-button size="small" fill="clear" color="danger" (click)="eliminarProducto(producto.codigo)">
+            <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+          </ion-button>
+          <ion-button size="small" fill="clear" color="primary" (click)="actualizarProducto(producto.codigo)">
+            <ion-icon slot="icon-only" name="sync-outline"></ion-icon>
+          </ion-button>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-row class="pagination-row">
+    <ion-col class="pagination-controls">
+      <ion-button (click)="previousPage()" [disabled]="page === 1">
+        Anterior
+      </ion-button>
+      <span>Página {{ page }} de {{ totalPages }}</span>
+      <ion-button (click)="nextPage()" [disabled]="page === totalPages">
+        Siguiente
+      </ion-button>
+    </ion-col>
+  </ion-row>
 </ion-content>
+
+<style>
+  .header {
+    font-weight: bold;
+  }
+
+  .data {
+    padding: 8px;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .action-buttons {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .header-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .col-label {
+    flex: 1;
+  }
+
+  .col-value {
+    flex: 3;
+    text-align: left;
+  }
+
+  .transparent-grid {
+    width: 100%;
+  }
+
+  .pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 16px;
+  }
+</style>
