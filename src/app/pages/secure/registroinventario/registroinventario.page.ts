@@ -29,6 +29,7 @@ export class RegistroinventarioPage implements OnInit {
     sold: 0,
     totalMoney: 0,
     gifted: 0,
+    discarted: 0
   };
 
   results = {

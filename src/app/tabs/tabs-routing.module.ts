@@ -43,6 +43,16 @@ const routes: Routes = [
         loadChildren: () => import('../pages/secure/editproducto/editproducto.module').then(m => m.EditproductoPageModule),
         canActivate: [ReloadGuard]  // Aplica el guard aquí
       },
+      {
+        path: 'inventarioregistro',
+        loadChildren: () => import('../pages/secure/inventarioregistro/inventarioregistro.module').then(m => m.InventarioregistroPageModule),
+        canActivate: [ReloadGuard]  // Aplica el guard aquí
+      },
+      {
+      path:'inventariomenu',
+      loadChildren: () => import('../pages/secure/inventariomenu/inventariomenu.module').then(m => m.InventariomenuPageModule),
+      canActivate: [ReloadGuard]
+    },
     ]
   }
 ];

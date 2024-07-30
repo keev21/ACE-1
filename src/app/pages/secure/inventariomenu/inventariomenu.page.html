@@ -1,0 +1,24 @@
+<ion-header collapse="fade" [translucent]="true">
+  <ion-toolbar color="dark">
+    <ion-title color="light">Inventario Menu</ion-title>
+    <ion-buttons slot="primary">
+      <!--<ion-button color="light" routerLink="/ajustes">
+        <ion-icon slot="icon-only" name="cog"></ion-icon>
+      </ion-button> -->
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <br>
+  <ion-button color="tertiary" routerLink="/inventarioregistro" class="floating-button button-spacing">
+    <ion-icon color="dark" name="duplicate-outline" class="icon-space"></ion-icon>
+    <strong>Registrar Inventario</strong>
+  </ion-button>
+  
+  <br>
+  
+  <ion-searchbar class="searchbar-spacing" color="medium" [(ngModel)]="searchTerm" (ionInput)="filterProductos($event)"
+    placeholder="Buscar producto"></ion-searchbar>
+
+</ion-content>

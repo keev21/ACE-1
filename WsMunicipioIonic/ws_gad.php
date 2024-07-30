@@ -894,3 +894,47 @@ if (isset($data['accion'])) {
             break;
     }
 }
+
+//INSERTAR PRODUCTO
+if ($post['accion'] == 'guardar_inventario') {
+    $producto_id = $post['producto_id'];
+    $cantidad_inicial = $post['cantidad_inicial'];
+    $fecha_registro = $post['fecha_registro'];
+
+    // Preparar la consulta
+    $stmt = mysqli_prepare($mysqli, "INSERT INTO inventario_registro_inicial (RI_CANTIDAD_INICIAL, RI_FECHA, PROD_CODIGO) VALUES (?, ?, ?)");
+    mysqli_stmt_bind_param($stmt, "isi", $cantidad_inicial, $fecha_registro, $producto_id);
+
+    // Ejecutar la consulta y verificar si fue exitosa
+    if (mysqli_stmt_execute($stmt)) {
+        $respuesta = json_encode(array('estado' => true, 'mensaje' => 'Datos guardados exitosamente'));
+    } else {
+        $respuesta = json_encode(array('estado' => false, 'mensaje' => 'Error al guardar los datos: ' . mysqli_stmt_error($stmt)));
+    }
+
+    mysqli_stmt_close($stmt);
+    echo $respuesta;
+
+}
+
+// Cargar productos
+if ($post['accion'] == 'cargar_productos') {
+    $sentencia = "SELECT id, nombre, pvp FROM productos";
+    $rs = mysqli_query($mysqli, $sentencia);
+
+    if (mysqli_num_rows($rs) > 0) {
+        $datos = array();
+        while ($row = mysqli_fetch_array($rs)) {
+            $datos[] = array(
+                'id' => $row['id'],
+                'nombre' => $row['nombre'],
+                'pvp' => $row['pvp']
+            );
+        }
+        $respuesta = json_encode(array('estado' => true, 'datos' => $datos));
+    } else {
+        $respuesta = json_encode(array('estado' => false, 'mensaje' => "No se encontraron productos"));
+    }
+    echo $respuesta;
+}
+
